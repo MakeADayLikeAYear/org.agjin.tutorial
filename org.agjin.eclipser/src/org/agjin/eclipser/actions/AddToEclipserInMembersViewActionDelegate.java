@@ -17,6 +17,8 @@ public class AddToEclipserInMembersViewActionDelegate implements IViewActionDele
 
 	@Override
 	public void run(IAction action) {
+		System.out.println("AddToEclipserInMembersViewActionDelegate run ~~~~~");
+		
 		MessageDialog.openInformation(targetPart.getSite().getShell(), "Add to Eclipser"
 				, "Triggered the " + getClass().getName() + " action");
 	}

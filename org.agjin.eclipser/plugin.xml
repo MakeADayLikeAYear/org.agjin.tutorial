@@ -47,6 +47,35 @@
    </extension>
    <extension
          point="org.eclipse.ui.popupMenus">
+        
+	  <!--
+	  아무래도 아래와 같이 우선순위가 적용되는 것 같다.
+	  우선순위 : objectContribution > viewerContribution 
+	  하지만 filter? 요걸 사용하면 다르게 적용할수도 있을 거 같다?	  
+      -->
+      <viewerContribution
+            id="org.agjin.eclipser.compilationUnitEditorPopup"
+            targetID="#CompilationUnitEditorContext">
+         <menu
+               id="org.agjin.eclipser.compilationUnitEditorPopupSubMenu"
+               label="Eclipser"
+               path="additions">
+            <groupMarker
+                  name="content">
+            </groupMarker>
+            <separator
+                  name="additions">
+            </separator>
+         </menu>
+         <action
+               class="org.agjin.eclipser.actions.AddToEclipserInCompilationUnitEditorActionDelegate"
+               icon="icons/sample.gif"
+               id="org.agjin.eclipser.addToEclipserInCompilationUnitEditor"
+               label="Add"
+               menubarPath="org.agjin.eclipser.compilationUnitEditorPopupSubMenu/context">
+         </action>
+      </viewerContribution>
+      
       <objectContribution
             adaptable="true"
             id="org.agjin.eclipser.popupMenu"
@@ -84,6 +113,7 @@
                tooltip="Add the currently selected resource(s) to the Eclipser view">
          </action>
       </objectContribution>
+
       <viewerContribution
             id="org.agjin.eclipser.membersViewPopup"
             targetID="org.eclipse.jdt.ui.MembersView">
@@ -107,7 +137,9 @@
                tooltip="Add selected member&apos;s compilation unit to the Eclipser view">
          </action>
       </viewerContribution>
+      
    </extension>
+
    <extension
          point="org.eclipse.ui.viewActions">
       <viewContribution
@@ -143,6 +175,58 @@
                tooltip="Add selected member&apos;s compilation unit to the Eclipser view3">
          </action>
       </viewContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            id="org.agjin.eclipser.compilationUnitEditorActions"
+            targetID="org.eclipse.jdt.ui.CompilationUnitEditor">
+         <menu
+               id="org.agjin.eclipser.compilationUnitEditorPopupSubMenu2"
+               label="Eclipser"
+               path="additions">
+            <groupMarker
+                  name="content">
+            </groupMarker>
+            <separator
+                  name="additions">
+            </separator>
+         </menu>
+         <action
+               class="org.agjin.eclipser.actions.AddToEclipserInCompilationUnitEditorActionDelegate2"
+               definitionId="org.agjin.eclipser.commands.addToEclipserView"
+               icon="icons/sample.gif"
+               id="org.agjin.eclipser.addToEclipserInCompilationUnitEditor2"
+               label="Add"
+               menubarPath="org.agjin.eclipser.compilationUnitEditorPopupSubMenu2/context"
+               style="push"
+               toolbarPath="Normal/additions"
+               tooltip="Add the editor selection to the Eclipser view">
+         </action>
+      </editorContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            description="Eclipser Commands"
+            id="org.agjin.eclipser.commands"
+            name="Eclipser">
+      </category>
+      <command
+            categoryId="org.agjin.eclipser.commands"
+            description="Add the selection the Eclipser"
+            id="org.agjin.eclipser.commands.addToEclipserView"
+            name="Add to Eclipser View">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.agjin.eclipser.commands.addToEclipserView"
+            contextId="org.eclipse.ui.textEditorScope"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+Shift+A">
+      </key>
    </extension>
 
 </plugin>

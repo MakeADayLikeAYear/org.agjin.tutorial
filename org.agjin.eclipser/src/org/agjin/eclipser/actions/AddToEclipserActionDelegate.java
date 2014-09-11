@@ -12,6 +12,8 @@ public class AddToEclipserActionDelegate implements IObjectActionDelegate {
 
 	@Override
 	public void run(IAction action) {
+		System.out.println("AddToEclipserActionDelegate run ~~~~~");
+		
 		MessageDialog.openInformation(targetPart.getSite().getShell(), "Add to Eclipser"
 				, "Triggered the " + getClass().getName() + " action");
 	}
