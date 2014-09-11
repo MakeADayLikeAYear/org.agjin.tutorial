@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Eclipser
+Bundle-SymbolicName: org.agjin.eclipser;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.agjin.eclipser.EclipserPlugin
+Bundle-Vendor: Agjin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.junit;bundle-version="4.11.0",
+ org.eclipse.core.resources;bundle-version="3.9.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
