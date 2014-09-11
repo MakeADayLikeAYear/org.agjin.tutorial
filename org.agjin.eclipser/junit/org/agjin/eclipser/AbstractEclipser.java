@@ -18,11 +18,11 @@ public abstract class AbstractEclipser extends TestCase {
 	}
 	
 	/**
-	 * »çÀüÃÊ±âÈ­
+	 * ì‚¬ì „ì´ˆê¸°í™”
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-		// ½ÇÇàµÉ °¢ Å×½ºÆ®¿¡ ´ëÇÑ Å×½ºÆ® ÁØºñ¹°À» ÃÊ±âÈ­ÇÑ´Ù.
+		// ì‹¤í–‰ë  ê° í…ŒìŠ¤íŠ¸ì— ëŒ€í•œ í…ŒìŠ¤íŠ¸ ì¤€ë¹„ë¬¼ì„ ì´ˆê¸°í™”í•œë‹¤.
 		waitForJobs();
 		testView = (EclipserView)
 			PlatformUI
@@ -31,18 +31,18 @@ public abstract class AbstractEclipser extends TestCase {
 				.getActivePage()
 				.showView(VIEW_ID);
 		
-		// 3ÃÊ°£ ¿©À¯¸¦ Áà¼­ Favorties ºä°¡ °³¹ßÀÚ¿¡°Ô º¸ÀÌµµ·Ï ÇÑ´Ù.
+		// 3ì´ˆê°„ ì—¬ìœ ë¥¼ ì¤˜ì„œ Favorties ë·°ê°€ ê°œë°œìì—ê²Œ ë³´ì´ë„ë¡ í•œë‹¤.
 		waitForJobs();
 		delay(3000);
 	}
 	
 	/**
-	 * ¿Ï·á ÈÄ µÚÃ³¸®¸¦ ¼öÇàÇÑ´Ù.
+	 * ì™„ë£Œ í›„ ë’¤ì²˜ë¦¬ë¥¼ ìˆ˜í–‰í•œë‹¤.
 	 */
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		
-		// Å×½ºÆ® ¼³ºñ Æó±â
+		// í…ŒìŠ¤íŠ¸ ì„¤ë¹„ íê¸°
 		waitForJobs();
 		PlatformUI
 			.getWorkbench()
@@ -52,7 +52,7 @@ public abstract class AbstractEclipser extends TestCase {
 	}
 	
 	/**
-	 * ºä Å×½ºÆ® ½ÇÇà
+	 * ë·° í…ŒìŠ¤íŠ¸ ì‹¤í–‰
 	
 	public void testView() {
 		TableViewer viewer = testView.getFaTableViewer();
@@ -61,7 +61,7 @@ public abstract class AbstractEclipser extends TestCase {
 		Object[] expectedLabels =
 			new Object[]{"One", "Two", "Three"};
 		
-		// ¿Ã¹Ù¸¥ ÄÁÅ×Ã÷ÀÓÀ» È®ÀÎ
+		// ì˜¬ë°”ë¥¸ ì»¨í…Œì¸ ì„ì„ í™•ì¸
 		IStructuredContentProvider contentProvider =
 			(IStructuredContentProvider)
 				viewer.getContentProvider();
@@ -69,7 +69,7 @@ public abstract class AbstractEclipser extends TestCase {
 		assertEquals(expectedContent,
 			contentProvider.getElements(viewer.getInput()));
 		
-		// ¿Ã¹Ù¸¥ ·¹ÀÌºíÀÓÀ» È®ÀÎ
+		// ì˜¬ë°”ë¥¸ ë ˆì´ë¸”ì„ì„ í™•ì¸
 		ITableLabelProvider labelProvider =
 			(ITableLabelProvider) viewer.getLabelProvider();
 		
@@ -80,7 +80,7 @@ public abstract class AbstractEclipser extends TestCase {
 	} */
 	
 	/**
-	 * ¹é±×¶ó¿îµå ÀÛ¾÷ÀÌ ³¡³¯ ¶§±îÁö ´ë±â
+	 * ë°±ê·¸ë¼ìš´ë“œ ì‘ì—…ì´ ëë‚  ë•Œê¹Œì§€ ëŒ€ê¸°
 	 */
 	@SuppressWarnings("deprecation")
 	public void waitForJobs() {
@@ -90,7 +90,7 @@ public abstract class AbstractEclipser extends TestCase {
 	}
 	
 	/**
-	 * ÇÁ·Î¼¼½º UI ÀÔ·ÂÀ» ¹ŞÁö¸¸ ÁöÁ¤µÈ ½Ã°£ °£°İ µ¿¾ÈÀº ¹İÈ¯ÇÏÁö ¾Ê´Â´Ù.
+	 * í”„ë¡œì„¸ìŠ¤ UI ì…ë ¥ì„ ë°›ì§€ë§Œ ì§€ì •ëœ ì‹œê°„ ê°„ê²© ë™ì•ˆì€ ë°˜í™˜í•˜ì§€ ì•ŠëŠ”ë‹¤.
 	 * @param waitTimeMillis
 	 */
 	public void delay(long waitTimeMillis) {
@@ -114,7 +114,7 @@ public abstract class AbstractEclipser extends TestCase {
 	}
 	
 	/**
-	 * µÎ¹è¿­ÀÌ °°ÀºÁö °Ë»çÇÑ´Ù.
+	 * ë‘ë°°ì—´ì´ ê°™ì€ì§€ ê²€ì‚¬í•œë‹¤.
 	 * @param expected
 	 * @param actual
 	 */

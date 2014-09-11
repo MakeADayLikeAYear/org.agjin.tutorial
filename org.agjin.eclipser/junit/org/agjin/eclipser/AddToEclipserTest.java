@@ -36,8 +36,8 @@ public class AddToEclipserTest extends AbstractEclipser {
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		
-		// ½Ã½ºÅÛÀÌ ½ÇÇà ÈÄ µû¶ó¿Ã ¼ö ÀÖµµ·Ï Àá½Ã ±â´Ù¸®¸é
-		// »èÁ¦ ¿ÀÆÛ·¹ÀÌ¼ÇÀÌ ´Ù¸¥ ¹é±×¶ó¿îµå ÀÛ¾÷°ú Ãæµ¹ÇÏÁö ¾Ê´Â´Ù.
+		// ì‹œìŠ¤í…œì´ ì‹¤í–‰ í›„ ë”°ë¼ì˜¬ ìˆ˜ ìˆë„ë¡ ì ì‹œ ê¸°ë‹¤ë¦¬ë©´
+		// ì‚­ì œ ì˜¤í¼ë ˆì´ì…˜ì´ ë‹¤ë¥¸ ë°±ê·¸ë¼ìš´ë“œ ì‘ì—…ê³¼ ì¶©ëŒí•˜ì§€ ì•ŠëŠ”ë‹¤.
 		delay(3000);
 		waitForJobs();
 		
@@ -51,7 +51,7 @@ public class AddToEclipserTest extends AbstractEclipser {
 		StructuredSelection selection = new StructuredSelection(project);
 		((ISetSelectionTarget)navigator).selectReveal(selection);
 		
-		// ¾×¼ÇÀ» ½ÇÇàÇÑ´Ù.
+		// ì•¡ì…˜ì„ ì‹¤í–‰í•œë‹¤.
 		final IObjectActionDelegate delegate =  new AddToEclipserActionDelegate();
 		IAction action = new Action("Test Add to Eclipser"){
 			public void run() {
@@ -63,8 +63,8 @@ public class AddToEclipserTest extends AbstractEclipser {
 		delegate.selectionChanged(action, selection);
 		action.run();
 		
-		// ³ªÁß¿¡ Add to Eclipse ¾×¼ÇÀÌ ÀûÀıÇÑ °ªÀ» 
-		// Eclipser ºä¿¡ Á¦´ë·Î Ãß°¡Çß´ÂÁö °ËÁõÇÏ´Â ÄÚµå¸¦ ¿©±â¿¡ Ãß°¡ÇÑ´Ù.
+		// ë‚˜ì¤‘ì— Add to Eclipse ì•¡ì…˜ì´ ì ì ˆí•œ ê°’ì„ 
+		// Eclipser ë·°ì— ì œëŒ€ë¡œ ì¶”ê°€í–ˆëŠ”ì§€ ê²€ì¦í•˜ëŠ” ì½”ë“œë¥¼ ì—¬ê¸°ì— ì¶”ê°€í•œë‹¤.
 	}
 	
 }

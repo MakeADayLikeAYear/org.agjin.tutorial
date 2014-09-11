@@ -19,7 +19,7 @@ public class OpenEclipserTest extends AbstractEclipser {
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		// ºä°¡ ´İÇôÀÖ°Ô ÇÑ´Ù.
+		// ë·°ê°€ ë‹«í˜€ìˆê²Œ í•œë‹¤.
 		waitForJobs();
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		IViewPart view = page.findView(VIEW_ID);
@@ -28,14 +28,14 @@ public class OpenEclipserTest extends AbstractEclipser {
 			page.hideView(view);
 		}
 		
-		// ºä°¡ 3ÃÊµÚ¿¡ º¸¿©Áöµµ·Ï
+		// ë·°ê°€ 3ì´ˆë’¤ì— ë³´ì—¬ì§€ë„ë¡
 		waitForJobs();
 	}
 	
 	@Test
 	public void testOpenEclipserView() {
 		
-		// ¿ÀÆÛ·¹ÀÌ¼ÇÀ» ½ÇÇàÇÑ´Ù.
+		// ì˜¤í¼ë ˆì´ì…˜ì„ ì‹¤í–‰í•œë‹¤.
 		(new Action("OpenEclipserViewTest") {
 			public void run() {
 				IWorkbenchWindowActionDelegate delegate = new OpenEclipserViewActionDelegate();
@@ -45,7 +45,7 @@ public class OpenEclipserTest extends AbstractEclipser {
 			}
 		}).run();
 		
-		// ¿ÀÆÛ·¹ÀÌ¼ÇÀÌ ¼º°øÀûÀ¸·Î ¿Ï·áµÇ¾ú´ÂÁö Å×½ºÆ®ÇÑ´Ù.
+		// ì˜¤í¼ë ˆì´ì…˜ì´ ì„±ê³µì ìœ¼ë¡œ ì™„ë£Œë˜ì—ˆëŠ”ì§€ í…ŒìŠ¤íŠ¸í•œë‹¤.
 		waitForJobs();
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		assertTrue(page.findView(VIEW_ID)!=null);

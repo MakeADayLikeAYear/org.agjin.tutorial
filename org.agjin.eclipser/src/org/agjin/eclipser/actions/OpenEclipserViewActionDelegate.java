@@ -18,7 +18,7 @@ public class OpenEclipserViewActionDelegate implements IWorkbenchWindowActionDel
 	public void run(IAction action) {
 		System.out.println("OpenEclipserViewActionDelegate run ~~~~~");
 		
-		// È°¼ºÈ­ ÆäÀÌÁö¸¦ ¾ò´Â´Ù.
+		// í™œì„±í™” í˜ì´ì§€ë¥¼ ì–»ëŠ”ë‹¤.
 		if (window==null) {
 			return;
 		}
@@ -29,7 +29,7 @@ public class OpenEclipserViewActionDelegate implements IWorkbenchWindowActionDel
 			return;
 		}
 		
-		// EclipserView ¿­°í È°¼ºÈ­ÇÑ´Ù.
+		// EclipserView ì—´ê³  í™œì„±í™”í•œë‹¤.
 		try {
 			
 			System.out.println(page.findView(EclipserView.ID));
