@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+
    <extension
          point="org.eclipse.ui.views">
       <view
@@ -15,7 +16,24 @@
             id="org.agjin.eclipser"
             name="Eclipser">
       </category>
+      <view
+            category="org.agjin.eclipser"
+            class="org.agjin.eclipser.views.EclipserView2"
+            icon="icons/sample.gif"
+            id="org.agjin.eclipser.views.EclipserView2"
+            name="EclipserView2"
+            restorable="true">
+      </view>
+      <view
+            category="org.agjin.eclipser"
+            class="org.agjin.eclipser.views.EclipserView3"
+            icon="icons/sample.gif"
+            id="org.agjin.eclipser.views.EclipserView3"
+            name="EclipserView3"
+            restorable="true">
+      </view>
    </extension>
+   
    <extension
          point="org.eclipse.ui.actionSets">
       <actionSet

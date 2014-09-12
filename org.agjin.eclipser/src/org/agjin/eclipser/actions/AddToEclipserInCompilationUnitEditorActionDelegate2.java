@@ -15,8 +15,9 @@ public class AddToEclipserInCompilationUnitEditorActionDelegate2 implements IEdi
 	public void run(IAction action) {
 		System.out.println("AddToEclipserInCompilationUnitEditorActionDelegate2 run ~~~~~");
 		
-//		MessageDialog.openInformation(targetPart.getSite().getShell(), "Add to Eclipser"
-//				, "Triggered the " + getClass().getName() + " action");
+		MessageDialog.openInformation(targetPart.getSite().getShell(), "Add to Eclipser"
+				, "Triggered the " + getClass().getName() + " action");
+		
 	}
 
 	@Override
