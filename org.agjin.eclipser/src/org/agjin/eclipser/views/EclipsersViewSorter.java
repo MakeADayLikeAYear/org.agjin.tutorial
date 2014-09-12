@@ -10,7 +10,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.TableColumn;
 
-public class EclipserViewSorter extends ViewerSorter {
+public class EclipsersViewSorter extends ViewerSorter {
 	
 	// 열 기준으로 정렬 정보를 그룹짓는 간단한 데이터 구조체
 	private class SortInfo {
@@ -21,8 +21,16 @@ public class EclipserViewSorter extends ViewerSorter {
 	
 	private TableViewer viewer;
 	private SortInfo[] infos;
+	
+	/**
+	 * sort 참고 --> http://www.java2s.com/Code/JavaAPI/org.eclipse.jface.viewers/extendsViewerSorterSortable.htm 
+	 * @param viewer
+	 * @param columns
+	 * @param comparators
+	 */
+	public EclipsersViewSorter(TableViewer viewer, TableColumn[] columns, Comparator<IEclipserItem>[] comparators) {
+		System.out.println("EclipserViewSorter--------: " +  columns );
 		
-	public EclipserViewSorter(TableViewer viewer, TableColumn[] columns, Comparator<IEclipserItem>[] comparators) {
 		this.viewer = viewer;
 		infos = new SortInfo[columns.length];
 		
@@ -36,9 +44,15 @@ public class EclipserViewSorter extends ViewerSorter {
 		}
 	}
 	
-	public int compare(Viewer viewer, IEclipserItem elclipser1, IEclipserItem eclipser2) {
+	/**
+	 * Param type은 변경되면 안됨 (Viewer, Object, Object) 
+	 * 변경될 경우 Sort 하지 못한다
+	 * public int compare(Viewer viewer, Object elclipser1, Object eclipser2) {
+	 */
+	public int compare(Viewer viewer, Object elclipser1, Object eclipser2) {
+		System.out.println("compare ------- ");
 		for(int i=0, size=infos.length; i<size; i++) {
-			int result = infos[i].comparator.compare(elclipser1, eclipser2);
+			int result = infos[i].comparator.compare((IEclipserItem)elclipser1, (IEclipserItem)eclipser2);
 			if(result!=0) {
 				if(infos[i].descending) {
 					return -result;
@@ -52,10 +66,11 @@ public class EclipserViewSorter extends ViewerSorter {
 	}
 	
 	private void createSelectionListener(final TableColumn column, final SortInfo info) {
-		column.addSelectionListener(new SelectionAdapter() {
-			
+		System.out.println("createSelectionListener--------: " +  info );
+		column.addSelectionListener(new SelectionAdapter() {			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				System.out.println("widgetSelected--------: " +  info );
 				sortUsing(info);
 			}
 
@@ -66,10 +81,10 @@ public class EclipserViewSorter extends ViewerSorter {
 		if(info==infos[0]) {
 			info.descending = !info.descending;
 		}
-		
 		else {
 			for(int i=0, size=infos.length; i<size; i++) {
 				if(info == infos[i]) {
+					System.out.println("" );
 					System.arraycopy(infos, 0, infos, 1, i);
 					infos[0] = info;
 					info.descending = false;
@@ -79,5 +94,14 @@ public class EclipserViewSorter extends ViewerSorter {
 		}
 		
 		viewer.refresh();
+	}
+	
+	public static void main(String[] args) {
+		String a[] = {"A", "B", "C", "D", "E", "F"};
+		
+		System.arraycopy(a, 0, a, 1, 4);
+		
+		for (int i=0, size=a.length ; i<size; i++)
+			System.out.println(a[i]);
 	}
 }

@@ -2,11 +2,13 @@ package org.agjin.eclipser.views;
 
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Iterator;
 
 import org.agjin.eclipser.jface.Person;
 import org.agjin.eclipser.model.EclipsersManager;
 import org.agjin.eclipser.model.IEclipserItem;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
@@ -33,7 +35,7 @@ public class EclipserView3 extends ViewPart {
 	private TableColumn nameColumn;
 	private TableColumn locationColumn;
 	
-	private EclipserViewSorter sorter;
+	private EclipsersViewSorter sorter;
 	
 	/*
 	 * The content provider class is responsible for
@@ -151,11 +153,13 @@ public class EclipserView3 extends ViewPart {
 
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void createTableSorter() {
 		
 		Comparator<IEclipserItem> nameComparator = new Comparator<IEclipserItem>() {
 			@Override
 			public int compare(IEclipserItem o1, IEclipserItem o2) {
+				System.out.println("nameComparator ------- ");
 				return o1.getName().compareTo(o2.getName());
 			}
 		};
@@ -163,6 +167,7 @@ public class EclipserView3 extends ViewPart {
 		Comparator<IEclipserItem> locationComparator = new Comparator<IEclipserItem>() {
 			@Override
 			public int compare(IEclipserItem o1, IEclipserItem o2) {
+				System.out.println("locationComparator ------- ");
 				return o1.getLocation().compareTo(o2.getLocation());
 			}
 		};
@@ -170,14 +175,26 @@ public class EclipserView3 extends ViewPart {
 		Comparator<IEclipserItem> typeComparator = new Comparator<IEclipserItem>() {
 			@Override
 			public int compare(IEclipserItem o1, IEclipserItem o2) {
+				System.out.println("typeComparator ------- ");
 				return o1.getType().compareTo(o2.getType());
 			}
 		};
 		
-		sorter = new EclipserViewSorter(viewer
+		sorter = new EclipsersViewSorter(viewer
 				, new TableColumn[]{nameColumn, locationColumn, typeColumn}
 				, new Comparator[]{nameComparator, locationComparator, typeComparator});
 		
 		viewer.setSorter(sorter);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public IEclipserItem[] getSelectedEclipsers() {
+		IStructuredSelection selection = (IStructuredSelection)viewer.getSelection();
+		IEclipserItem[] items = new IEclipserItem[selection.size()];
+		Iterator<IEclipserItem> iter = selection.iterator();
+		int index = 0;
+		while (iter.hasNext())
+			items[index++] = (IEclipserItem)iter.next();
+		return items;
 	}
 }
