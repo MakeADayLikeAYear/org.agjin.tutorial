@@ -8,6 +8,10 @@ import org.eclipse.ui.IWorkbenchPart;
 
 public class AddToEclipserActionDelegate implements IObjectActionDelegate {
 	
+	/**
+	 * @uml.property  name="targetPart"
+	 * @uml.associationEnd  
+	 */
 	private IWorkbenchPart targetPart;
 
 	@Override

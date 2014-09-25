@@ -111,13 +111,16 @@
             <groupMarker
                   name="content2">
             </groupMarker>
+            <groupMarker
+                  name="content3">
+            </groupMarker>
          </menu>
          <action
                class="org.agjin.eclipser.actions.AddToEclipserActionDelegate"
                enablesFor="+"
                icon="icons/sample.gif"
                id="org.agjin.eclipser.addToEclipser"
-               label="Add"
+               label="Add - obj"
                menubarPath="org.agjin.eclipser.popupSubMenu/content"
                tooltip="Add the currently selected resource(s) to the Eclipser view">
          </action>
@@ -126,12 +129,22 @@
                enablesFor="2+"
                icon="icons/sample.gif"
                id="org.agjin.eclipser.addToEclipser"
-               label="Add2"
+               label="Add2 - obj"
                menubarPath="org.agjin.eclipser.popupSubMenu/content2"
                tooltip="Add the currently selected resource(s) to the Eclipser view">
          </action>
+         <action
+               class="org.agjin.eclipser.actions.AddToEclipserActionDelegate3"
+               enablesFor="+"
+               icon="icons/sample.gif"
+               id="org.agjin.eclipser.view.addToEclipser"
+               label="Add3 - obj"
+               menubarPath="org.agjin.eclipser.popupSubMenu/content3"
+               tooltip="Add the currently selected resource(s) to the Eclipser view">
+         </action>
       </objectContribution>
-
+	  
+	  <!--
       <viewerContribution
             id="org.agjin.eclipser.membersViewPopup"
             targetID="org.eclipse.jdt.ui.MembersView">
@@ -152,6 +165,30 @@
                id="org.agjin.eclipser.addToEclipserInMembersView"
                label="Add"
                menubarPath="org.agjin.eclipser.membersViewPopupSubMenu/content"
+               tooltip="Add selected member&apos;s compilation unit to the Eclipser view">
+         </action>
+      </viewerContribution>
+      -->
+      <viewerContribution
+            id="org.agjin.eclipser.eclipserViewPopup"
+            targetID="org.agjin.eclipser.views.EclipserView3">
+         <menu
+               id="org.agjin.eclipser.eclipserViewPopupSubMenu"
+               label="Eclipser"
+               path="additions">
+            <groupMarker
+                  name="content">
+            </groupMarker>
+            <separator
+                  name="additions">
+            </separator>
+         </menu>
+         <action
+               class="org.agjin.eclipser.actions.AddToEclipserInViewActionDelegate"
+               icon="icons/sample.gif"
+               id="org.agjin.eclipser.addToEclipserInView"
+               label="Add -view"
+               menubarPath="org.agjin.eclipser.eclipserViewPopupSubMenu/content"
                tooltip="Add selected member&apos;s compilation unit to the Eclipser view">
          </action>
       </viewerContribution>

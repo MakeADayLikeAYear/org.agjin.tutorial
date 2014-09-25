@@ -11,6 +11,10 @@ import org.eclipse.ui.PartInitException;
 
 public class OpenEclipserViewActionDelegate implements IWorkbenchWindowActionDelegate {
 	
+	/**
+	 * @uml.property  name="window"
+	 * @uml.associationEnd  
+	 */
 	private IWorkbenchWindow window;
 	public static final String ID = "org.agjin.eclipser.actions.OpenEclipserViewActionDelegate";
 	
@@ -18,7 +22,7 @@ public class OpenEclipserViewActionDelegate implements IWorkbenchWindowActionDel
 	public void run(IAction action) {
 		System.out.println("OpenEclipserViewActionDelegate run ~~~~~");
 		
-		// 활성화 페이지를 얻는다.
+		// ?�성???�이�?? ?�는??
 		if (window==null) {
 			return;
 		}
@@ -29,7 +33,7 @@ public class OpenEclipserViewActionDelegate implements IWorkbenchWindowActionDel
 			return;
 		}
 		
-		// EclipserView 열고 활성화한다.
+		// EclipserView ?�고 ?�성?�한??
 		try {
 			
 			System.out.println(page.findView(EclipserView.ID));

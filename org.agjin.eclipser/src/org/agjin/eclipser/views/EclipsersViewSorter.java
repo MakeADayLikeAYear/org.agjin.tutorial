@@ -1,7 +1,9 @@
 package org.agjin.eclipser.views;
 
 import java.util.Comparator;
+import java.util.logging.Level;
 
+import org.agjin.eclipser.logger.EclipserLogger;
 import org.agjin.eclipser.model.IEclipserItem;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -12,14 +14,28 @@ import org.eclipse.swt.widgets.TableColumn;
 
 public class EclipsersViewSorter extends ViewerSorter {
 	
-	// 열 기준으로 정렬 정보를 그룹짓는 간단한 데이터 구조체
+	/**
+	 * @uml.property  name="logger"
+	 * @uml.associationEnd  multiplicity="(1 1)"
+	 */
+	public EclipserLogger logger = new EclipserLogger(EclipsersViewSorter.class, Level.CONFIG);
+	
+	// ??기�??�로 ?�렬 ?�보�?그룹짓는 간단???�이??구조�?
 	private class SortInfo {
 //		int columnIndex;
 		Comparator<IEclipserItem> comparator;
 		boolean descending;
 	}
 	
+	/**
+	 * @uml.property  name="viewer"
+	 * @uml.associationEnd  multiplicity="(1 1)"
+	 */
 	private TableViewer viewer;
+	/**
+	 * @uml.property  name="infos"
+	 * @uml.associationEnd  multiplicity="(0 -1)" inverse="this$0:org.agjin.eclipser.views.EclipsersViewSorter$SortInfo"
+	 */
 	private SortInfo[] infos;
 	
 	/**
@@ -29,7 +45,7 @@ public class EclipsersViewSorter extends ViewerSorter {
 	 * @param comparators
 	 */
 	public EclipsersViewSorter(TableViewer viewer, TableColumn[] columns, Comparator<IEclipserItem>[] comparators) {
-		System.out.println("EclipserViewSorter--------: " +  columns );
+		logger.debug("EclipsersViewSorter ---- [{}]", (Object)columns);
 		
 		this.viewer = viewer;
 		infos = new SortInfo[columns.length];
@@ -45,32 +61,32 @@ public class EclipsersViewSorter extends ViewerSorter {
 	}
 	
 	/**
-	 * Param type은 변경되면 안됨 (Viewer, Object, Object) 
-	 * 변경될 경우 Sort 하지 못한다
+	 * Param type??�?��?�면 ?�됨 (Viewer, Object, Object) 
+	 * �?��??경우 Sort ?��? 못한??
 	 * public int compare(Viewer viewer, Object elclipser1, Object eclipser2) {
 	 */
-	public int compare(Viewer viewer, Object elclipser1, Object eclipser2) {
-		System.out.println("compare ------- ");
+	public int compare(Viewer viewer, Object eclipser1, Object eclipser2) {
+		int result = 0;
 		for(int i=0, size=infos.length; i<size; i++) {
-			int result = infos[i].comparator.compare((IEclipserItem)elclipser1, (IEclipserItem)eclipser2);
+			result = infos[i].comparator.compare((IEclipserItem)eclipser1, (IEclipserItem)eclipser2);
 			if(result!=0) {
 				if(infos[i].descending) {
-					return -result;
-				} else {
-					return result;
-				}
+					result = -result;
+				} 
+				break;
 			}
 		}
 		
-		return 0;
+		logger.debug("compare ---- [{}], {{}} --> 결과[{}]", eclipser1, eclipser2, result);
+		return result;
 	}
 	
 	private void createSelectionListener(final TableColumn column, final SortInfo info) {
-		System.out.println("createSelectionListener--------: " +  info );
-		column.addSelectionListener(new SelectionAdapter() {			
+		logger.debug("createSelectionListener ---- [{}], {{}}", column, info);
+		column.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				System.out.println("widgetSelected--------: " +  info );
+				logger.debug("widgetSelected ---- [{}]",  info);
 				sortUsing(info);
 			}
 
@@ -84,7 +100,6 @@ public class EclipsersViewSorter extends ViewerSorter {
 		else {
 			for(int i=0, size=infos.length; i<size; i++) {
 				if(info == infos[i]) {
-					System.out.println("" );
 					System.arraycopy(infos, 0, infos, 1, i);
 					infos[0] = info;
 					info.descending = false;

@@ -1,11 +1,28 @@
 package org.agjin.eclipser.jface;
 
 public class Person {
+	/**
+	 * @uml.property  name="firstName"
+	 */
 	public String firstName = "John";
+	/**
+	 * @uml.property  name="lastName"
+	 */
 	public String lastName = "Doe";
+	/**
+	 * @uml.property  name="age"
+	 */
 	public int age = 37;
 	
+	/**
+	 * @uml.property  name="children"
+	 * @uml.associationEnd  multiplicity="(0 -1)"
+	 */
 	public Person[] children = new Person[0];
+	/**
+	 * @uml.property  name="parent"
+	 * @uml.associationEnd  
+	 */
 	public Person parent;
 	
 	public Person(String firstName, String lastName, int age) {

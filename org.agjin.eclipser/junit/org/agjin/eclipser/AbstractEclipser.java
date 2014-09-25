@@ -11,6 +11,10 @@ import org.eclipse.ui.PlatformUI;
 public abstract class AbstractEclipser extends TestCase {
 	public static final String VIEW_ID = "org.agjin.eclipser.views.EclipserView";
 	
+	/**
+	 * @uml.property  name="testView"
+	 * @uml.associationEnd  
+	 */
 	private EclipserView testView;
 	
 	public AbstractEclipser(String name) {
@@ -18,11 +22,11 @@ public abstract class AbstractEclipser extends TestCase {
 	}
 	
 	/**
-	 * 사전초기화
+	 * ?�전초기??
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-		// 실행될 각 테스트에 대한 테스트 준비물을 초기화한다.
+		// ?�행??�??�스?�에 ??�� ?�스??�?��물을 초기?�한??
 		waitForJobs();
 		testView = (EclipserView)
 			PlatformUI
@@ -31,18 +35,18 @@ public abstract class AbstractEclipser extends TestCase {
 				.getActivePage()
 				.showView(VIEW_ID);
 		
-		// 3초간 여유를 줘서 Favorties 뷰가 개발자에게 보이도록 한다.
+		// 3초간 ?�유�?줘서 Favorties 뷰�? 개발?�에�?보이?�록 ?�다.
 		waitForJobs();
 		delay(3000);
 	}
 	
 	/**
-	 * 완료 후 뒤처리를 수행한다.
+	 * ?�료 ???�처리�? ?�행?�다.
 	 */
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		
-		// 테스트 설비 폐기
+		// ?�스???�비 ?�기
 		waitForJobs();
 		PlatformUI
 			.getWorkbench()
@@ -52,7 +56,7 @@ public abstract class AbstractEclipser extends TestCase {
 	}
 	
 	/**
-	 * 뷰 테스트 실행
+	 * �??�스???�행
 	
 	public void testView() {
 		TableViewer viewer = testView.getFaTableViewer();
@@ -61,7 +65,7 @@ public abstract class AbstractEclipser extends TestCase {
 		Object[] expectedLabels =
 			new Object[]{"One", "Two", "Three"};
 		
-		// 올바른 컨테츠임을 확인
+		// ?�바�?컨테츠임???�인
 		IStructuredContentProvider contentProvider =
 			(IStructuredContentProvider)
 				viewer.getContentProvider();
@@ -69,7 +73,7 @@ public abstract class AbstractEclipser extends TestCase {
 		assertEquals(expectedContent,
 			contentProvider.getElements(viewer.getInput()));
 		
-		// 올바른 레이블임을 확인
+		// ?�바�??�이블임???�인
 		ITableLabelProvider labelProvider =
 			(ITableLabelProvider) viewer.getLabelProvider();
 		
@@ -80,7 +84,7 @@ public abstract class AbstractEclipser extends TestCase {
 	} */
 	
 	/**
-	 * 백그라운드 작업이 끝날 때까지 대기
+	 * 백그?�운???�업???�날 ?�까�???��
 	 */
 	@SuppressWarnings("deprecation")
 	public void waitForJobs() {
@@ -90,7 +94,7 @@ public abstract class AbstractEclipser extends TestCase {
 	}
 	
 	/**
-	 * 프로세스 UI 입력을 받지만 지정된 시간 간격 동안은 반환하지 않는다.
+	 * ?�로?�스 UI ?�력??받�?�?�?��???�간 간격 ?�안??반환?��? ?�는??
 	 * @param waitTimeMillis
 	 */
 	public void delay(long waitTimeMillis) {
@@ -114,7 +118,7 @@ public abstract class AbstractEclipser extends TestCase {
 	}
 	
 	/**
-	 * 두배열이 같은지 검사한다.
+	 * ?�배?�이 같�?�?�?��?�다.
 	 * @param expected
 	 * @param actual
 	 */

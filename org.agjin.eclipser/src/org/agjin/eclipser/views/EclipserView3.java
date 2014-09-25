@@ -1,28 +1,43 @@
 package org.agjin.eclipser.views;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.logging.Level;
 
-import org.agjin.eclipser.jface.Person;
+import org.agjin.eclipser.actions.CopyEclipsersAction;
+import org.agjin.eclipser.actions.CutEclipsersAction;
+import org.agjin.eclipser.actions.EclipserViewFilterAction;
+import org.agjin.eclipser.actions.PasteEclipsersAction;
+import org.agjin.eclipser.actions.RemoveEclipsersAction;
+import org.agjin.eclipser.logger.EclipserLogger;
 import org.agjin.eclipser.model.EclipsersManager;
 import org.agjin.eclipser.model.IEclipserItem;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.ViewPart;
 
 public class EclipserView3 extends ViewPart {
+	
+	EclipserLogger logger = new EclipserLogger(EclipserView3.class, Level.CONFIG);
 	
 	/**
 	 * The ID of the view as specified by the extension.
@@ -30,92 +45,17 @@ public class EclipserView3 extends ViewPart {
 	public static final String ID = "org.agjin.eclipser.views.EclipserView2";
 	
 	private TableViewer viewer;
-	
 	private TableColumn typeColumn;
 	private TableColumn nameColumn;
 	private TableColumn locationColumn;
-	
 	private EclipsersViewSorter sorter;
+	private RemoveEclipsersAction removeAction;
+	private EclipserViewFilterAction filterAction;
+	private Clipboard clipboard;
+	private CopyEclipsersAction copyAction;
+	private CutEclipsersAction cutAction;
+	private PasteEclipsersAction pasteAction;
 	
-	/*
-	 * The content provider class is responsible for
-	 * providing objects to the view. It can wrap
-	 * existing objects in adapters or simply return
-	 * objects as-is. These objects may be sensitive
-	 * to the current input of the view, or ignore
-	 * it and always show the same content 
-	 * (like Task List, for example).
-	 */
-	 
-	class ViewContentProvider implements IStructuredContentProvider {
-		
-	    /**
-	     * This implementation does nothing.
-	     */
-	    @Override
-		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-	        // do nothing.
-	    }
-
-	    /**
-	     * This implementation does nothing.
-	     */
-	    @Override
-		public void dispose() {
-	        // do nothing.
-	    }
-		
-	    /**
-	     * Returns the elements in the input, which must be either an array or a
-	     * <code>Collection</code>. 
-	     */
-	    @Override
-		public Object[] getElements(Object inputElement) {
-	    	
-	    	System.out.println("ViewContentProvider.getElements ---------------------->");
-	    	System.out.println("Class : " + inputElement.getClass());
-			
-	        if (inputElement instanceof Object[]) {
-	        	System.out.println("instanceof Object[]");
-				return (Object[]) inputElement;
-			}
-	        if (inputElement instanceof Collection) {
-	        	System.out.println("instanceof Collection");
-				return ((Collection<?>) inputElement).toArray();
-			}
-	        return new Object[0];
-		}
-	}
-	
-	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
-		public String getColumnText(Object obj, int index) {
-//			return getText(obj);
-			Person person = (Person)obj;
-			
-			switch(index) {
-				case 0 :
-					return person.firstName;
-				case 1 :
-					return person.lastName;
-				case 2 :
-					return Integer.toString(person.age);
-				case 3 :
-					return Integer.toString(person.children.length);
-				default :
-					return "unknown : " + index;
-			}
-		}
-		
-		public Image getColumnImage(Object obj, int index) {
-//			return getImage(obj);
-			return null;
-		}
-		public Image getImage(Object obj) {
-			return PlatformUI.getWorkbench().
-					getSharedImages().getImage(ISharedImages.IMG_OBJ_ELEMENT);
-		}
-	}
-
 	public EclipserView3() {
 		// TODO Auto-generated constructor stub
 	}
@@ -140,13 +80,26 @@ public class EclipserView3 extends ViewPart {
 		locationColumn.setText("Location");
 		locationColumn.setWidth(450);
 		
+		logger.info("createPartControl ==============================================[[[  ");
+		logger.info("createPartControl ==============================================[[[ setContentProvider ");
 		viewer.setContentProvider(new EclipsersViewContentProvider());
+		logger.info("createPartControl ==============================================[[[ setLabelProvider ");
 		viewer.setLabelProvider(new EclipsersViewLabelProvider());
+		logger.info("createPartControl ==============================================[[[ createPartControl ");
 		viewer.setInput(EclipsersManager.getManager());
 		
+		logger.info("createPartControl ==============================================]]] ");
+		
 		createTableSorter();
+		createActions();
+		createContextMenu();
+		createToolbarButtions();
+		createViewPulldownMenu();
+		hookKeyboardActions();
+		hookGolbalActions();
+		hookDragAndDrop();
 	}
-
+	
 	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub
@@ -159,7 +112,7 @@ public class EclipserView3 extends ViewPart {
 		Comparator<IEclipserItem> nameComparator = new Comparator<IEclipserItem>() {
 			@Override
 			public int compare(IEclipserItem o1, IEclipserItem o2) {
-				System.out.println("nameComparator ------- ");
+				logger.debug("nameComparator ---- [{}], [{}]", o1.getName(), o2.getName());
 				return o1.getName().compareTo(o2.getName());
 			}
 		};
@@ -167,7 +120,7 @@ public class EclipserView3 extends ViewPart {
 		Comparator<IEclipserItem> locationComparator = new Comparator<IEclipserItem>() {
 			@Override
 			public int compare(IEclipserItem o1, IEclipserItem o2) {
-				System.out.println("locationComparator ------- ");
+				logger.debug("locationComparator ---- [{}], [{}]", o1.getLocation(), o2.getLocation());
 				return o1.getLocation().compareTo(o2.getLocation());
 			}
 		};
@@ -175,7 +128,7 @@ public class EclipserView3 extends ViewPart {
 		Comparator<IEclipserItem> typeComparator = new Comparator<IEclipserItem>() {
 			@Override
 			public int compare(IEclipserItem o1, IEclipserItem o2) {
-				System.out.println("typeComparator ------- ");
+				logger.debug("typeComparator ---- [{}], [{}]", o1.getType(), o2.getType());
 				return o1.getType().compareTo(o2.getType());
 			}
 		};
@@ -189,6 +142,8 @@ public class EclipserView3 extends ViewPart {
 	
 	@SuppressWarnings("unchecked")
 	public IEclipserItem[] getSelectedEclipsers() {
+		logger.info("getSelectedEclipsers ---- ");
+		
 		IStructuredSelection selection = (IStructuredSelection)viewer.getSelection();
 		IEclipserItem[] items = new IEclipserItem[selection.size()];
 		Iterator<IEclipserItem> iter = selection.iterator();
@@ -197,4 +152,157 @@ public class EclipserView3 extends ViewPart {
 			items[index++] = (IEclipserItem)iter.next();
 		return items;
 	}
+	
+	/**
+	 * Action Create~
+	 */
+	private void createActions() {
+		logger.info("createActions ---- ");
+		
+		logger.info("createActions ---- removeAction");
+		IWorkbench workbench = PlatformUI.getWorkbench();
+		ISharedImages platformImages = workbench.getSharedImages();
+		removeAction = new RemoveEclipsersAction(this, "Remove");
+		removeAction.setImageDescriptor(platformImages.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
+		removeAction.setDisabledImageDescriptor(platformImages.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
+		removeAction.setToolTipText("Remove the selected eclipse items");
+		
+		logger.info("createActions ---- copyAction");
+		copyAction = new CopyEclipsersAction(this, "Copy");
+		copyAction.setImageDescriptor(platformImages.getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
+		copyAction.setDisabledImageDescriptor(platformImages.getImageDescriptor(ISharedImages.IMG_TOOL_COPY_DISABLED));
+		copyAction.setToolTipText("Copy the selected Eclipser items");
+		
+		logger.info("createActions ---- cutAction");
+		cutAction = new CutEclipsersAction(copyAction, removeAction, "Cut");
+		cutAction.setImageDescriptor(platformImages.getImageDescriptor(ISharedImages.IMG_TOOL_CUT));
+		cutAction.setDisabledImageDescriptor(platformImages.getImageDescriptor(ISharedImages.IMG_TOOL_CUT_DISABLED));
+		cutAction.setToolTipText("Cut  the selected Eclipser items");
+		
+		logger.info("createActions ---- pasteAction");
+		pasteAction = new PasteEclipsersAction(this, "Paste");
+		pasteAction.setImageDescriptor(platformImages.getImageDescriptor(ISharedImages.IMG_TOOL_PASTE));
+		pasteAction.setDisabledImageDescriptor(platformImages.getImageDescriptor(ISharedImages.IMG_TOOL_PASTE_DISABLED));
+		pasteAction.setToolTipText("Paste the selected Eclipser items");
+	}
+	
+	/**
+	 * View PopupMenu Create 
+	 */
+	public void createContextMenu() {
+		logger.info("createContextMenu ---- ");
+		
+		MenuManager menuMgr = new MenuManager("#PopupMenu");
+		// menu reset ~~~
+		menuMgr.setRemoveAllWhenShown(true);
+		menuMgr.addMenuListener(new IMenuListener() {
+			
+			@Override
+			public void menuAboutToShow(IMenuManager manager) {
+				logger.info("menuAboutToShow ---- ");
+				
+				EclipserView3.this.fillContextMenu(manager);
+			}
+			
+		});
+		
+		Menu menu = menuMgr.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuMgr, viewer);
+	}
+	
+	/**
+	 * View PopupMenu List
+	 * @param menuMgr
+	 */
+	private void fillContextMenu(IMenuManager menuMgr) {
+		logger.info("fillContextMenu ---- ");
+		boolean isEmpty = viewer.getSelection().isEmpty();
+		removeAction.setEnabled(!isEmpty);
+		menuMgr.add(removeAction);
+		menuMgr.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+	}
+	
+	/**
+	 * ToolbarButton  add ~
+	 */
+	private void createToolbarButtions() {
+		logger.info("createToolbarButtions ---- ");
+		
+		getViewSite().getActionBars().getToolBarManager().add(removeAction);
+		removeAction.setEnabled(false);
+		viewer.addSelectionChangedListener(
+				new ISelectionChangedListener() {
+					
+					@Override
+					public void selectionChanged(SelectionChangedEvent event) {
+						logger.info("selectionChanged ---- ");
+						removeAction.setEnabled(!event.getSelection().isEmpty());
+					}
+					
+		});
+	}
+	
+	/**
+	 * PullDown Menu Create
+	 */
+	private void createViewPulldownMenu() {
+		IMenuManager menu = getViewSite().getActionBars().getMenuManager();
+		filterAction = new EclipserViewFilterAction(viewer, "Filter...");
+		menu.add(filterAction);
+	}
+	
+	/**
+	 * Keyboard key Action Create
+	 */
+	private void hookKeyboardActions() {
+		viewer.getControl().addKeyListener(new KeyAdapter() {
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				handlekeyreleased(e);
+			}
+			
+		});
+	}
+	
+	protected void handlekeyreleased(KeyEvent event) {
+		if (event.character == SWT.DEL && event.stateMask == 0) {
+			removeAction.run();
+		}
+	}
+	
+	/**
+	 * Golbal Action Add ~
+	 */
+	private void hookGolbalActions() {
+		getViewSite().getActionBars().setGlobalActionHandler(ActionFactory.DELETE.getId(), removeAction);
+		getViewSite().getActionBars().setGlobalActionHandler(ActionFactory.COPY.getId(), copyAction);
+		getViewSite().getActionBars().setGlobalActionHandler(ActionFactory.CUT.getId(), cutAction);
+		getViewSite().getActionBars().setGlobalActionHandler(ActionFactory.PASTE.getId(), pasteAction);
+	}
+	
+	/**
+	 * dispose --> clipboard.dispose();
+	 *  
+	 * @return
+	 */
+	public Clipboard getClipboard() {
+		if (clipboard == null)
+			clipboard = new Clipboard(getSite().getShell().getDisplay());
+		
+		return clipboard;
+	}
+	
+	public void dispose() {
+		if (clipboard != null)
+			clipboard.dispose();
+		super.dispose();
+	}
+	
+	public void hookDragAndDrop() {
+		new EclipsersDragSource(this, viewer);
+		new EclipsersDropTarget(this, viewer);
+	}
+	
 }

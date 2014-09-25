@@ -9,6 +9,10 @@ import org.eclipse.ui.IWorkbenchPart;
 
 public class AddToEclipserInMembersViewActionDelegate implements IViewActionDelegate {
 
+	/**
+	 * @uml.property  name="targetPart"
+	 * @uml.associationEnd  
+	 */
 	private IWorkbenchPart targetPart;
 	
 	public AddToEclipserInMembersViewActionDelegate() {

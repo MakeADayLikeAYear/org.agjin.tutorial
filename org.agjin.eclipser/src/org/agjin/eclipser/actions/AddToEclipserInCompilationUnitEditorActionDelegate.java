@@ -9,6 +9,10 @@ import org.eclipse.ui.IWorkbenchPart;
 
 public class AddToEclipserInCompilationUnitEditorActionDelegate implements IEditorActionDelegate {
 	
+	/**
+	 * @uml.property  name="targetPart"
+	 * @uml.associationEnd  
+	 */
 	private IWorkbenchPart targetPart;
 	
 	public AddToEclipserInCompilationUnitEditorActionDelegate() {

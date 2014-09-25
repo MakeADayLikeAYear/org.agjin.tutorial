@@ -13,6 +13,7 @@ public class EclipserJavaElement implements IEclipserItem {
 	
 	private EclipserItemType<?> type;
 	private IJavaElement element;
+
 	private String name;
 	
 	public EclipserJavaElement(EclipserItemType<?> type, IJavaElement element) {

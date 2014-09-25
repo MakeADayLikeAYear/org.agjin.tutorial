@@ -2,7 +2,11 @@ package org.agjin.eclipser.model;
 
 import org.eclipse.core.runtime.IAdaptable;
 
+/**
+ * @author  USER
+ */
 public interface IEclipserItem extends IAdaptable {
+
 	String getName();
 	void setName(String newName);
 	String getLocation();
